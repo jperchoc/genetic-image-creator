@@ -1,0 +1,5 @@
+/home/jonathan/ImageCreatorGenetic/ImageCreatorGenetic/obj/x86/Release/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/home/jonathan/ImageCreatorGenetic/ImageCreatorGenetic/bin/Release/ImageCreatorGenetic.exe.mdb
+/home/jonathan/ImageCreatorGenetic/ImageCreatorGenetic/bin/Release/ImageCreatorGenetic.exe
+/home/jonathan/ImageCreatorGenetic/ImageCreatorGenetic/obj/x86/Release/ImageCreatorGenetic.exe
+/home/jonathan/ImageCreatorGenetic/ImageCreatorGenetic/obj/x86/Release/ImageCreatorGenetic.exe.mdb

@@ -1,0 +1,14 @@
+﻿<Properties StartupItem="ImageCreatorGenetic/ImageCreatorGenetic.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="ImageCreatorGenetic/ImageCreatorDesigner.cs">
+    <Files>
+      <File FileName="ImageCreatorGenetic/Program.cs" Line="16" Column="36" />
+      <File FileName="ImageCreatorGenetic/ImageCreator.cs" Line="1" Column="1" />
+      <File FileName="ImageCreatorGenetic/ImageCreatorDesigner.cs" Line="109" Column="69" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
