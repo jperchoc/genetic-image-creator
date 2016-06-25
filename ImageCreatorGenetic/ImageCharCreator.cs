@@ -8,6 +8,8 @@ namespace ImageCreatorGenetic
 {
 	public class ImageCharCreator
 	{
+        public static DrawMode DrawingMode = DrawMode.Circles;
+
 		public List<ImageCharProperties> caracteres;
 		public int width;
 		public int height;
@@ -20,7 +22,7 @@ namespace ImageCreatorGenetic
 			this.width = width;
 			this.height = height;
 		}
-		public Image Image
+		public Bitmap Image
 		{
 			get{
 				if (image != null)
@@ -28,12 +30,23 @@ namespace ImageCreatorGenetic
 				image = new Bitmap(width, height);
 				using (Graphics g = Graphics.FromImage(image))
 				{
-					foreach (var c in caracteres.OrderBy(p => p.charIndex).ToList())
+                    g.FillRectangle(new SolidBrush(Color.Black), 0, 0, width, height);
+//                    caracteres = caracteres.OrderBy(p => p.charIndex).ToList();
+					foreach (var c in caracteres)
 					{
 						Font f = new Font("Tahoma", c.charSize);
 						Brush br = new SolidBrush(c.charColor);
-						//g.DrawString(c.txt, f, br, c.charPosition);
-						g.FillEllipse(br,c.charPosition.X , c.charPosition.Y, c.charSize, c.charSize);
+                        switch (DrawingMode)
+                        {
+                            case DrawMode.Circles:
+                                g.FillEllipse(br, c.charPosition.X, c.charPosition.Y, c.charSize, c.charSize);
+                                break;
+                            case DrawMode.Characters:
+                                g.DrawString(c.txt, f, br, c.charPosition);
+                                break;
+                            default:
+                                break;
+                        }
 					}
 				}
 				return image;
