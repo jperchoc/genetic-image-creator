@@ -43,7 +43,6 @@ namespace ImageCreatorGenetic
 			BackgroundWorker bw = new BackgroundWorker();
 			bw.DoWork += (s, a) => {
                 Stopwatch swComputeFitness = new Stopwatch();
-                Stopwatch swCreateGeneration = new Stopwatch();
 
                 LockBitmap lockOrig = new LockBitmap(new Bitmap(imageOriginale.Image));
                 lockOrig.LockBits();
@@ -72,7 +71,7 @@ namespace ImageCreatorGenetic
                     Best = pool[0].FitnessScore;
                     this.labelFitness.Invoke(new Action(() =>
                     {
-                        this.imageCalculee.Image = pool[0].Image;
+						this.imageCalculee.Image = pool[0].Image;
                         this.labelFitness.Text =
                             "Generation n° " + generation
                             + "\r\nAvg : " + pool.Average(c => c.FitnessScore).ToString("00.00") + "%"
@@ -80,17 +79,21 @@ namespace ImageCreatorGenetic
 
                         if (generation % 20 == 0)
                         {
-                            imageCalculee.Image.Save(saveDir.FullName + "\\generation_" + generation.ToString("0000") + ".jpg");
+							this.imageCalculee.Image.Save(saveDir.FullName + "/generation_" + generation.ToString("0000") + ".png");
                         }
                     }));
                     //On crée une nouvelle génération
-                    pool = GeneticFunctions.CreateNewGeneration(pool);
+                    GeneticFunctions.CreateNewGeneration(ref pool);
                     progressBar.Invoke(new Action(() => progressBar.Value++));
                 }
                 lockOrig.UnlockBits();
 			};
             bw.RunWorkerCompleted+=(a,b) =>
             {
+				if(b.Error!=null)
+				{
+					MessageBox.Show(b.Error.Message + Environment.NewLine + b.Error.StackTrace);
+				}
                 boutonStart.Enabled = true;
             };
             boutonStart.Enabled = false;

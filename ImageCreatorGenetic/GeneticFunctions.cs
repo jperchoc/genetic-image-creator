@@ -30,27 +30,31 @@ namespace ImageCreatorGenetic
             {
                 _EventsWorkerCompleted.Add(new System.Threading.AutoResetEvent(false));
                 BackgroundWorker bg = new BackgroundWorker();
+				int itemsPerThread = (int)Math.Ceiling(((double)pool.Count / THREADS));
                 bg.DoWork += ((av, b) =>
                 {
                     int nThread = (int)b.Argument;
                     //On crée les lockbitmaps
                     List<LockBitmap> lockBitmaps = new List<LockBitmap>();
                     List<long> differences = new List<long>();
-                    for (int i = 0; i < pool.Count / THREADS; i++)
+					for (int i = 0; i < itemsPerThread; i++)
                     {
-                        int index = nThread * (pool.Count / THREADS) + i;
-                        var creator = pool[index];
-                        if (creator.FitnessScore != -1)
-                        {
-                            lockBitmaps.Add(null);
-                            differences.Add(-1);
-                        }
-                        else
-                        {
-                            lockBitmaps.Add(new LockBitmap(creator.Image));
-                            lockBitmaps[i].LockBits();
-                            differences.Add(0);
-                        }
+						int index = nThread * itemsPerThread + i;
+						if(index<pool.Count)
+						{
+	                        var creator = pool[index];
+	                        if (creator.FitnessScore != -1)
+	                        {
+	                            lockBitmaps.Add(null);
+	                            differences.Add(-1);
+	                        }
+	                        else
+	                        {
+	                            lockBitmaps.Add(new LockBitmap(creator.Image));
+	                            lockBitmaps[i].LockBits();
+	                            differences.Add(0);
+	                        }
+						}
                     }
                     //On parcourt les pixels
                     for (int w = 0; w < lockOrig.Width; w++)
@@ -58,9 +62,9 @@ namespace ImageCreatorGenetic
                         for (int h = 0; h < lockOrig.Height; h++)
                         {
                             Color orig = lockOrig.GetPixel(w, h);
-                            for (int i = 0; i < pool.Count / THREADS; i++)
+							for (int i = 0; i < itemsPerThread; i++)
                             {
-                                if (lockBitmaps[i] != null)
+								if (i < lockBitmaps.Count && lockBitmaps[i] != null)
                                 {
                                     Color crea = lockBitmaps[i].GetPixel(w, h);
                                     differences[i] += Math.Abs(orig.R - crea.R);
@@ -71,20 +75,22 @@ namespace ImageCreatorGenetic
                         }
                     }
                     long diffMax = lockOrig.Width * lockOrig.Height * 3 * 255;
-                    for (int i = 0; i < pool.Count / THREADS; i++)
+					for (int i = 0; i < itemsPerThread; i++)
                     {
-                        if (lockBitmaps[i] != null)
+						int index = nThread * itemsPerThread + i;
+						if (index<pool.Count && i < lockBitmaps.Count && lockBitmaps[i] != null)
                         {
                             //On délock
                             lockBitmaps[i].UnlockBits();
+							//lockBitmaps[i].Dispose();
                             //ON calcule les fitness
-                            int index = nThread * (pool.Count / THREADS) + i;
+                            
                             var creator = pool[index];
                             double percentError = (differences[i] * 100.0 / diffMax);
                             creator.FitnessScore = 100.0 - percentError;
+								progressBarFitness.Invoke(new Action(() => progressBarFitness.Value++));
                         }
-                        progressBarFitness.Invoke(new Action(() => progressBarFitness.Value++));
-                    }
+                	}
                     _EventsWorkerCompleted[nThread].Set();
                 });
                 bg.RunWorkerAsync(t);
@@ -149,7 +155,6 @@ namespace ImageCreatorGenetic
 				icc = mutate(icc);
 			}
 			return icc;
-
 		}
 		public static ImageCharProperties GetRandomChar(int width, int height)
 		{
@@ -165,7 +170,8 @@ namespace ImageCreatorGenetic
 			//TODO
 			int location = random.Next(parent.caracteres.Count);
 			parent.caracteres[location] = GetRandomChar(parent.width, parent.height);
-            return parent;
+			return parent;
+			/*
 			switch (random.Next(4)) 
 			{
 				case 0:
@@ -196,11 +202,11 @@ namespace ImageCreatorGenetic
 					parent.caracteres[location] = GetRandomChar(parent.width, parent.height);
 					break;
 			}
-			
 			return parent;
+			*/
 		}
 
-		public static List<ImageCharCreator> CreateNewGeneration(List<ImageCharCreator> pool)
+		public static void CreateNewGeneration(ref List<ImageCharCreator> pool)
 		{
 			List<ImageCharCreator> nouvelleGeneration = new List<ImageCharCreator>();
 			int eliteCount = (int)(pool.Count * GeneticFunctions.ELITEPERCENT / 100.0);
@@ -208,13 +214,14 @@ namespace ImageCreatorGenetic
 				eliteCount = 2;
 			for (int i = 0; i < pool.Count; i++)
 			{
-					if(i<eliteCount)
+				if(i<eliteCount)
 					nouvelleGeneration.Add(pool[i]);
 				else 
 					nouvelleGeneration.Add(Mate(nouvelleGeneration, eliteCount));
 			}
-			return nouvelleGeneration;
+			pool = nouvelleGeneration;
 		}
 	}
 }
+
 

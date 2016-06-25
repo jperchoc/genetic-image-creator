@@ -3,3 +3,4 @@
 /home/jonathan/ImageCreatorGenetic/ImageCreatorGenetic/bin/Debug/ImageCreatorGenetic.exe
 /home/jonathan/ImageCreatorGenetic/ImageCreatorGenetic/obj/x86/Debug/ImageCreatorGenetic.exe
 /home/jonathan/ImageCreatorGenetic/ImageCreatorGenetic/obj/x86/Debug/ImageCreatorGenetic.exe.mdb
+/home/jonathan/ImageCreatorGenetic/ImageCreatorGenetic/obj/x86/Debug/ImageCreatorGenetic.ImageCreator.resources

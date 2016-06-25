@@ -16,6 +16,10 @@ namespace ImageCreatorGenetic
 		private Bitmap image = null;
 		public double FitnessScore=-1;
 
+		~ImageCharCreator()  // destructor
+		{
+			Console.WriteLine("Destruction d'un charcreator");
+		}
 		public ImageCharCreator(int width, int height)
 		{
 			this.caracteres = new List<ImageCharProperties>();
@@ -24,6 +28,7 @@ namespace ImageCreatorGenetic
 		}
 		public Bitmap Image
 		{
+			set{image = value;}
 			get{
 				if (image != null)
 					return image;
