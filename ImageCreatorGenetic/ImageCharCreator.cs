@@ -9,6 +9,7 @@ namespace ImageCreatorGenetic
 	public class ImageCharCreator
 	{
         public static DrawMode DrawingMode = DrawMode.Circles;
+		public static Color BackColor = Color.Black;
 
 		public List<ImageCharProperties> caracteres;
 		public int width;
@@ -37,7 +38,7 @@ namespace ImageCreatorGenetic
 				{
 					this.image = new Bitmap(width, height);
 					Graphics g = Graphics.FromImage(this.image);
-					g.Clear(Color.Black);
+					g.Clear(BackColor);
 					//this.caracteres = this.caracteres.OrderBy(p => p.charIndex).ToList();
 					Brush br = new SolidBrush(Color.White);
 					ImageCharProperties prop = null;

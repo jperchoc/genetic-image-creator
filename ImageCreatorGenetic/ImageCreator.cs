@@ -141,8 +141,10 @@ namespace ImageCreatorGenetic
 			{
 				try
 				{
-					imageOriginale.Image = new Bitmap(ofd.FileName);
+					Bitmap img = new Bitmap(ofd.FileName);
+					imageOriginale.Image = img;
                     boutonStart.Enabled = true;
+					ImageCharCreator.BackColor = CalculateAverageColor(img);
                     
 				}
 				catch(Exception ex)
@@ -151,6 +153,33 @@ namespace ImageCreatorGenetic
                     MessageBox.Show("Impossible de charger l'image : " + ex.Message, "Echec du chargement de l'image");
 				}
 			}
+		}
+		private System.Drawing.Color CalculateAverageColor(Bitmap bm)
+		{
+			LockBitmap lockbm = new LockBitmap(bm);
+			lockbm.LockBits();
+			long red=0, green=0, blue=0;
+			int minDiversion = 15;
+			int dropped = 0;
+			for (int i = 0; i < bm.Width; i++)
+			{
+				for (int j = 0; j < bm.Height; j++)
+				{
+					Color c = lockbm.GetPixel(i, j);
+					if (Math.Abs(c.R - c.G) > minDiversion || Math.Abs(c.R - c.B) > minDiversion || Math.Abs(c.G - c.B) > minDiversion)
+					{
+						red += c.R;
+						green += c.G;
+						blue += c.B;
+					}
+					else
+					{
+						dropped++;
+					}
+				}
+			}
+			long cnt = bm.Width * bm.Height - dropped;;
+			return Color.FromArgb((int)(red / cnt), (int)(green / cnt), (int)(blue / cnt));
 		}
 	}
 }

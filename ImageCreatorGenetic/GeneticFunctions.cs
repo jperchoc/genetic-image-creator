@@ -163,10 +163,10 @@ namespace ImageCreatorGenetic
 			prop.charIndex = random.Next(1, 10);
 			prop.charSize1 = random.Next(1, MAX_FONT_SIZE);
 			prop.charSize2 = random.Next(1, MAX_FONT_SIZE);
-			int marginTriange = width / 10;
+			int marginTriange = MAX_FONT_SIZE;
 			prop.p1 = new PointF(random.Next(0, width), random.Next(0, height));
-			prop.p2 = new PointF(random.Next(0, width), random.Next(0, height));
-			prop.p3 = new PointF(random.Next(0, width), random.Next(0, height));
+			prop.p2 = new PointF(random.Next((int)(prop.p1.X-marginTriange), (int)(prop.p1.X+marginTriange)),random.Next((int)(prop.p1.Y-marginTriange), (int)(prop.p1.Y+marginTriange)));
+			prop.p3 = new PointF(random.Next((int)(prop.p1.X-marginTriange), (int)(prop.p1.X+marginTriange)),random.Next((int)(prop.p1.Y-marginTriange), (int)(prop.p1.Y+marginTriange)));
 			/*
 			prop.p2 = new PointF(
 				random.Next(Math.Min(0, (int)prop.p1.X-marginTriange), Math.Max(width,(int)prop.p1.X+marginTriange)), 
