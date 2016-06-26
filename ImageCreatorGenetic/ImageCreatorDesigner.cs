@@ -33,7 +33,9 @@ namespace ImageCreatorGenetic
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
+			this.radioButton2 = new System.Windows.Forms.RadioButton();
+			this.radioButton3 = new System.Windows.Forms.RadioButton();
+			this.radioButton4 = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.imageOriginale)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCalculee)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.updownNbChar)).BeginInit();
@@ -70,7 +72,7 @@ namespace ImageCreatorGenetic
             // boutonStart
             // 
             this.boutonStart.Enabled = false;
-            this.boutonStart.Location = new System.Drawing.Point(6, 172);
+            this.boutonStart.Location = new System.Drawing.Point(6, 212);
             this.boutonStart.Name = "boutonStart";
             this.boutonStart.Size = new System.Drawing.Size(167, 23);
             this.boutonStart.TabIndex = 5;
@@ -146,14 +148,14 @@ namespace ImageCreatorGenetic
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(6, 230);
+			this.progressBar.Location = new System.Drawing.Point(6, 245);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(167, 23);
             this.progressBar.TabIndex = 15;
             // 
             // progressBarFitness
             // 
-            this.progressBarFitness.Location = new System.Drawing.Point(6, 201);
+            this.progressBarFitness.Location = new System.Drawing.Point(6, 270);
             this.progressBarFitness.Name = "progressBarFitness";
             this.progressBarFitness.Size = new System.Drawing.Size(167, 23);
             this.progressBarFitness.TabIndex = 15;
@@ -182,7 +184,7 @@ namespace ImageCreatorGenetic
             // 
             // labelFitness
             // 
-            this.labelFitness.Location = new System.Drawing.Point(6, 267);
+            this.labelFitness.Location = new System.Drawing.Point(6, 300);
             this.labelFitness.Name = "labelFitness";
             this.labelFitness.Size = new System.Drawing.Size(167, 60);
             this.labelFitness.TabIndex = 8;
@@ -237,9 +239,11 @@ namespace ImageCreatorGenetic
             // 
             this.groupBox1.Controls.Add(this.radioButton1);
             this.groupBox1.Controls.Add(this.radioButton2);
+			this.groupBox1.Controls.Add(this.radioButton3);
+			this.groupBox1.Controls.Add(this.radioButton4);
             this.groupBox1.Location = new System.Drawing.Point(8, 98);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(164, 68);
+            this.groupBox1.Size = new System.Drawing.Size(164, 111);
             this.groupBox1.TabIndex = 21;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Drawing";
@@ -266,6 +270,28 @@ namespace ImageCreatorGenetic
             this.radioButton2.TabStop = true;
             this.radioButton2.Text = "Characters";
             this.radioButton2.UseVisualStyleBackColor = true;
+			// 
+			// radioButton3
+			// 
+			this.radioButton3.AutoSize = true;
+			this.radioButton3.Location = new System.Drawing.Point(6, 65);
+			this.radioButton3.Name = "radioButton2";
+			this.radioButton3.Size = new System.Drawing.Size(76, 17);
+			this.radioButton2.TabIndex = 22;
+			this.radioButton3.TabStop = true;
+			this.radioButton3.Text = "Elipses";
+			this.radioButton3.UseVisualStyleBackColor = true;
+			// 
+			// radioButton4
+			// 
+			this.radioButton4.AutoSize = true;
+			this.radioButton4.Location = new System.Drawing.Point(6, 88);
+			this.radioButton4.Name = "radioButton2";
+			this.radioButton4.Size = new System.Drawing.Size(76, 17);
+			this.radioButton4.TabIndex = 22;
+			this.radioButton4.TabStop = true;
+			this.radioButton4.Text = "Triangles";
+			this.radioButton4.UseVisualStyleBackColor = true;
             // 
             // ImageCreator
             // 
@@ -302,6 +328,8 @@ namespace ImageCreatorGenetic
         private GroupBox groupBox1;
         private RadioButton radioButton1;
         private RadioButton radioButton2;
+		private RadioButton radioButton3;
+		private RadioButton radioButton4;
         private Label label3;
         private Label label2;
         private Label label1;

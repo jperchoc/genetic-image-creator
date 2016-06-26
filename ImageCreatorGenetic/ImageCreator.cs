@@ -14,7 +14,7 @@ namespace ImageCreatorGenetic
 {
 	public partial class ImageCreator : Form
 	{
-		private const int THREADS = 6;
+		private const int THREADS = 8;
 		private const int percentElite = 2; //on garde 5% des meilleurs
 
 		public ImageCreator()
@@ -23,18 +23,28 @@ namespace ImageCreatorGenetic
 			GeneticFunctions.ELITEPERCENT = percentElite;
 			GeneticFunctions.MUTATIONS_COUNT = 1;
 		}
-        DirectoryInfo saveDir;
+        DirectoryInfo saveDir=null;
 		public void startGeneration(object sender, System.EventArgs e)
 		{
-            ImageCharCreator.DrawingMode = radioButton1.Checked ? DrawMode.Circles : DrawMode.Characters;
-            GeneticFunctions.DrawingMode = radioButton1.Checked ? DrawMode.Circles : DrawMode.Characters;
+			if (radioButton1.Checked)
+				ImageCharCreator.DrawingMode = DrawMode.Circles;
+			else if (radioButton2.Checked)
+				ImageCharCreator.DrawingMode = DrawMode.Characters;
+			else if (radioButton3.Checked)
+				ImageCharCreator.DrawingMode = DrawMode.Elipse;
+			else if (radioButton4.Checked)
+				ImageCharCreator.DrawingMode = DrawMode.Triangle;
 
             GeneticFunctions.MAX_FONT_SIZE = (int)(Math.Max(10, imageOriginale.Image.Height / 10));
             Console.WriteLine("Max font size = " + GeneticFunctions.MAX_FONT_SIZE);
 
             GeneticFunctions.MUTATIONS_COUNT = (int)updownNbChar.Value/500;
             String dirName = DateTime.Now.ToString("dd_MM_yyyy_hh_mm_ss");
-            saveDir = Directory.CreateDirectory(dirName);
+			FileInfo root = new FileInfo(Application.ExecutablePath);
+			saveDir = Directory.Exists(root.Directory.FullName + "/" + dirName) ? 
+				new DirectoryInfo(root.Directory.FullName + "/" + dirName)
+				:
+				Directory.CreateDirectory(root.Directory.FullName + "/" + dirName);
              
 			progressBar.Value = 0;
 			progressBar.Maximum = (int)updownNbGenerations.Value;
@@ -51,7 +61,6 @@ namespace ImageCreatorGenetic
 				for (int individu = 0; individu < updownNbPopulation.Value; individu++)
 				{
 					ImageCharCreator icc = new ImageCharCreator(imageOriginale.Image.Width, imageOriginale.Image.Height);
-
 					for (int i = 0; i < updownNbChar.Value; i++)
 					{
 						icc.caracteres.Add(GeneticFunctions.GetRandomChar(icc.width, icc.height));
@@ -65,13 +74,15 @@ namespace ImageCreatorGenetic
                     progressBarFitness.Invoke(new Action(() => progressBarFitness.Value = 0));
                     GeneticFunctions.ComputeFitness(lockOrig, pool, THREADS, progressBarFitness);
                     swComputeFitness.Stop();
-                    Console.WriteLine("Temps de calcul de fitness : " + swComputeFitness.ElapsedMilliseconds + "ms");
+                    //Console.WriteLine("Temps de calcul de fitness : " + swComputeFitness.ElapsedMilliseconds + "ms");
                     //On affiche la meilleure image
                     pool = pool.OrderByDescending(c => c.FitnessScore).ToList();
                     Best = pool[0].FitnessScore;
                     this.labelFitness.Invoke(new Action(() =>
                     {
-						this.imageCalculee.Image = pool[0].Image;
+						if (this.imageCalculee.Image!=null)
+							this.imageCalculee.Image.Dispose();
+						this.imageCalculee.Image = new Bitmap(pool[0].Image);
                         this.labelFitness.Text =
                             "Generation n° " + generation
                             + "\r\nAvg : " + pool.Average(c => c.FitnessScore).ToString("00.00") + "%"
@@ -85,6 +96,7 @@ namespace ImageCreatorGenetic
                     //On crée une nouvelle génération
                     GeneticFunctions.CreateNewGeneration(ref pool);
                     progressBar.Invoke(new Action(() => progressBar.Value++));
+					GC.Collect();
                 }
                 lockOrig.UnlockBits();
 			};

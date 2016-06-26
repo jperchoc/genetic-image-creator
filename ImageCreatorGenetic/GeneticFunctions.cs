@@ -88,7 +88,7 @@ namespace ImageCreatorGenetic
                             var creator = pool[index];
                             double percentError = (differences[i] * 100.0 / diffMax);
                             creator.FitnessScore = 100.0 - percentError;
-								progressBarFitness.Invoke(new Action(() => progressBarFitness.Value++));
+							progressBarFitness.Invoke(new Action(() => progressBarFitness.Value++));
                         }
                 	}
                     _EventsWorkerCompleted[nThread].Set();
@@ -126,7 +126,7 @@ namespace ImageCreatorGenetic
 			return 100.0 - percentError;
 		}
 
-		public static ImageCharCreator Mate(List<ImageCharCreator> newPool, int eliteCount) 
+		/*public static ImageCharCreator Mate(List<ImageCharCreator> newPool, int eliteCount) 
 		{
 			// get random 2 from elite
 			int first = random.Next(eliteCount);
@@ -136,7 +136,7 @@ namespace ImageCreatorGenetic
 			}
 			// mate the two
 			return Mate(newPool[first], newPool[second]);
-		}
+		}*/
 		public static ImageCharCreator Mate(ImageCharCreator parent1, ImageCharCreator parent2)
 		{
 			ImageCharCreator icc = new ImageCharCreator(parent1.width, parent1.height);
@@ -152,34 +152,58 @@ namespace ImageCreatorGenetic
 			}
 
 			for (int i = 0; i < GeneticFunctions.MUTATIONS_COUNT; i++) {
-				icc = mutate(icc);
+				mutate(ref icc);
 			}
 			return icc;
 		}
 		public static ImageCharProperties GetRandomChar(int width, int height)
 		{
-			return new ImageCharProperties(
-				caracteres[random.Next(0, caracteres.Count)],
-				new PointF(random.Next(0, width), random.Next(0, height)),
-				Color.FromArgb(random.Next(1, 255), random.Next(0, 255), random.Next(0, 255), random.Next(0, 255)),
-				random.Next(1, MAX_FONT_SIZE),
-				random.Next(1, 10));
+			ImageCharProperties prop = new ImageCharProperties();
+			prop.charColor = Color.FromArgb(random.Next(1, 255), random.Next(0, 255), random.Next(0, 255), random.Next(0, 255));
+			prop.charIndex = random.Next(1, 10);
+			prop.charSize1 = random.Next(1, MAX_FONT_SIZE);
+			prop.charSize2 = random.Next(1, MAX_FONT_SIZE);
+			int marginTriange = width / 10;
+			prop.p1 = new PointF(random.Next(0, width), random.Next(0, height));
+			prop.p2 = new PointF(random.Next(0, width), random.Next(0, height));
+			prop.p3 = new PointF(random.Next(0, width), random.Next(0, height));
+			/*
+			prop.p2 = new PointF(
+				random.Next(Math.Min(0, (int)prop.p1.X-marginTriange), Math.Max(width,(int)prop.p1.X+marginTriange)), 
+				random.Next(Math.Min(0,(int)prop.p1.Y-marginTriange), Math.Max(height,(int)prop.p1.Y+marginTriange))
+			);
+			prop.p2 = new PointF(
+				random.Next(Math.Min(0,(int)prop.p2.X-marginTriange), Math.Max(width,(int)prop.p2.X+marginTriange)), 
+				random.Next(Math.Min(0,(int)prop.p2.Y-marginTriange), Math.Max(height,(int)prop.p2.Y+marginTriange))
+			);
+			*/
+			/*switch(DrawMode)
+			{
+			case DrawMode.Characters:
+				break;
+			case DrawMode.Circles:
+				break;
+			case DrawMode.Elipse:
+				break;
+			case DrawMode.Triangle:
+				break;
+			}
+*/
+			return prop;
 		}
-		public static ImageCharCreator mutate(ImageCharCreator parent)
+		public static void mutate(ref ImageCharCreator parent)
 		{
 			//TODO
 			int location = random.Next(parent.caracteres.Count);
 			parent.caracteres[location] = GetRandomChar(parent.width, parent.height);
-			return parent;
-			/*
-			switch (random.Next(4)) 
+
+			switch (random.Next(20)) 
 			{
 				case 0:
                     //Console.WriteLine("Mutate : remove and add new random one to the end");
                     // remove one and add new prefs to the end
                     parent.caracteres.RemoveAt(location);
-                                   ImageCharProperties newChar = GetRandomChar(parent.width, parent.height);
-                                   parent.caracteres.Add(newChar);
+					parent.caracteres.Add(GetRandomChar(parent.width, parent.height));
                     //parent.caracteres[location].charIndex = random.Next(1,10);
                     break;
 				case 1:
@@ -188,8 +212,12 @@ namespace ImageCreatorGenetic
 					int i1 = location;
 					int i2 = random.Next(0, parent.caracteres.Count);
 					var tmpchar = parent.caracteres[i1];
-					parent.caracteres[i1].charPosition = parent.caracteres[i2].charPosition;
-					parent.caracteres[i2].charPosition = tmpchar.charPosition;
+					parent.caracteres[i1].p1 = parent.caracteres[i2].p1;
+					parent.caracteres[i1].p2 = parent.caracteres[i2].p2;
+					parent.caracteres[i1].p3 = parent.caracteres[i2].p3;
+					parent.caracteres[i2].p1 = tmpchar.p1;
+					parent.caracteres[i2].p2 = tmpchar.p2;
+					parent.caracteres[i2].p3 = tmpchar.p3;
 					break;
 				case 2:
 					//Console.WriteLine("Mutate : color change");
@@ -201,25 +229,24 @@ namespace ImageCreatorGenetic
 					// replace one with new prefs
 					parent.caracteres[location] = GetRandomChar(parent.width, parent.height);
 					break;
+				default:
+					break;
 			}
-			return parent;
-			*/
+
+			//return parent;
+
 		}
 
 		public static void CreateNewGeneration(ref List<ImageCharCreator> pool)
 		{
-			List<ImageCharCreator> nouvelleGeneration = new List<ImageCharCreator>();
+			//List<ImageCharCreator> nouvelleGeneration = new List<ImageCharCreator>();
 			int eliteCount = (int)(pool.Count * GeneticFunctions.ELITEPERCENT / 100.0);
 			if (eliteCount < 2)
 				eliteCount = 2;
-			for (int i = 0; i < pool.Count; i++)
+			for (int i = eliteCount; i < pool.Count; i++)
 			{
-				if(i<eliteCount)
-					nouvelleGeneration.Add(pool[i]);
-				else 
-					nouvelleGeneration.Add(Mate(nouvelleGeneration, eliteCount));
+				pool[i] = Mate(pool[random.Next(0,i)], pool[random.Next(0,i)]);
 			}
-			pool = nouvelleGeneration;
 		}
 	}
 }

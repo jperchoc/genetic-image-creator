@@ -1,10 +1,13 @@
 ﻿<Properties StartupItem="ImageCreatorGenetic/ImageCreatorGenetic.csproj">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="ImageCreatorGenetic/ImageCreatorDesigner.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="ImageCreatorGenetic/ImageCreator.cs">
     <Files>
       <File FileName="ImageCreatorGenetic/Program.cs" Line="16" Column="36" />
-      <File FileName="ImageCreatorGenetic/ImageCreator.cs" Line="1" Column="1" />
-      <File FileName="ImageCreatorGenetic/ImageCreatorDesigner.cs" Line="109" Column="69" />
+      <File FileName="ImageCreatorGenetic/ImageCreatorDesigner.cs" Line="109" Column="15" />
+      <File FileName="ImageCreatorGenetic/ImageCreator.cs" Line="72" Column="1" />
+      <File FileName="ImageCreatorGenetic/ImageCharCreator.cs" Line="12" Column="3" />
+      <File FileName="ImageCreatorGenetic/LockBitmap.cs" Line="188" Column="5" />
+      <File FileName="ImageCreatorGenetic/GeneticFunctions.cs" Line="221" Column="5" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

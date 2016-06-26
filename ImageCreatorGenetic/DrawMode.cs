@@ -8,6 +8,8 @@ namespace ImageCreatorGenetic
 {   public enum DrawMode
     {
         Circles,
-        Characters
+        Characters,
+		Elipse,
+		Triangle
     }
 }
