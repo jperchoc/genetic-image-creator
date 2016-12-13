@@ -167,6 +167,8 @@ namespace ImageCreatorGenetic
 			prop.p1 = new PointF(random.Next(0, width), random.Next(0, height));
 			prop.p2 = new PointF(random.Next((int)(prop.p1.X-marginTriange), (int)(prop.p1.X+marginTriange)),random.Next((int)(prop.p1.Y-marginTriange), (int)(prop.p1.Y+marginTriange)));
 			prop.p3 = new PointF(random.Next((int)(prop.p1.X-marginTriange), (int)(prop.p1.X+marginTriange)),random.Next((int)(prop.p1.Y-marginTriange), (int)(prop.p1.Y+marginTriange)));
+
+            prop.txt = caracteres[prop.charIndex];
 			/*
 			prop.p2 = new PointF(
 				random.Next(Math.Min(0, (int)prop.p1.X-marginTriange), Math.Max(width,(int)prop.p1.X+marginTriange)), 

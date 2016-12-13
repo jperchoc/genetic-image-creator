@@ -16,10 +16,11 @@ namespace ImageCreatorGenetic
 		public int height;
 		private Bitmap image = null;
 		public double FitnessScore=-1;
-
+        public List<Font> fonts = new List<Font>();
 		~ImageCharCreator()  // destructor
 		{
 			this.caracteres.Clear();
+            this.fonts.Clear();
 			this.image = null;
 		}
 		public ImageCharCreator(int width, int height)
@@ -27,7 +28,10 @@ namespace ImageCreatorGenetic
 			this.caracteres = new List<ImageCharProperties>();
 			this.width = width;
 			this.height = height;
-		}
+            fonts = new List<Font>();
+            for (int i = 1; i <= GeneticFunctions.MAX_FONT_SIZE; i++)
+                fonts.Add(new Font("Tahoma", i));
+        }
 		public Bitmap Image
 		{
 			set{image = value;}
@@ -49,16 +53,18 @@ namespace ImageCreatorGenetic
 						switch(DrawingMode)
 						{
 							case DrawMode.Elipse:
-							case DrawMode.Circles:
-								g.FillEllipse(br, prop.p1.X, prop.p1.Y, prop.charSize1, prop.charSize2);
+                                g.FillEllipse(br, prop.p1.X, prop.p1.Y, prop.charSize1, prop.charSize2);
+                                break;
+                            case DrawMode.Circles:
+								g.FillEllipse(br, prop.p1.X, prop.p1.Y, prop.charSize1, prop.charSize1);
 								break;
 							case DrawMode.Triangle:
 								g.FillPolygon(br,new PointF[]{prop.p1,prop.p2,prop.p3});
 								break;
 							case DrawMode.Characters:
-								Font f = new Font("Tahoma", prop.charSize1);
-								g.DrawString(prop.txt, f, br, prop.p1);
-								f.Dispose();
+								//Font f = ;
+								g.DrawString(prop.txt, fonts[prop.charSize1], br, prop.p1);
+								//f.Dispose();
 								break;
 							default:
 								break;

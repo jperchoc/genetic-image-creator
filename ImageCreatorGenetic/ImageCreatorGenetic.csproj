@@ -34,13 +34,13 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="DrawMode.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="ImageCreator.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ImageCreatorDesigner.cs">
-      <SubType>Form</SubType>
+    <Compile Include="ImageCreator.Designer.cs">
+      <DependentUpon>ImageCreator.cs</DependentUpon>
     </Compile>
+    <Compile Include="Program.cs" />
     <Compile Include="GeneticFunctions.cs" />
     <Compile Include="ImageCharCreator.cs" />
     <Compile Include="ImageCharProperties.cs" />
@@ -56,8 +56,8 @@
     <Reference Include="System.Data.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ImageCreatorDesigner.resx">
-      <DependentUpon>ImageCreatorDesigner.cs</DependentUpon>
+    <EmbeddedResource Include="ImageCreator.resx">
+      <DependentUpon>ImageCreator.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
 </Project>
